@@ -7,8 +7,7 @@ const Footer = () => {
       <div className="sm:flex sm:items-center sm:justify-between container mx-auto">
         <a
           href="https://flowbite.com/"
-          className="flex items-center mb-4 sm:mb-0"
-        >
+          className="flex items-center mb-4 sm:mb-0">
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             DG
           </span>

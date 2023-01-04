@@ -5,13 +5,14 @@ import React, { ReactNode } from 'react';
 
 interface LayoutProps {
   children: ReactNode;
+  disableBanner?: boolean;
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, disableBanner = false }: LayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <Banner />
+      {!disableBanner && <Banner />}
       <main className="flex-grow container mx-auto p-6 gap-6">{children}</main>
       <Footer />
     </div>

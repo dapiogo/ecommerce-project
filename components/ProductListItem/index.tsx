@@ -1,28 +1,21 @@
+import { ProductDetails } from 'components/Product';
 import Rating from 'components/Rating';
 import Link from 'next/link';
 
-export interface ProductDetails {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
+type TProductListItem = Pick<
+  ProductDetails,
+  'title' | 'image' | 'rating' | 'id'
+>;
+
+interface ProductListItemProps {
+  data: TProductListItem;
 }
 
-interface ProductProps {
-  data: ProductDetails;
-}
-
-const Product = ({ data }: ProductProps) => {
-  const { image, title, rating } = data;
+const ProductListItem = ({ data }: ProductListItemProps) => {
+  const { image, title, rating, id } = data;
   return (
     <Link
-      href="/#"
+      href={`products/${id}`}
       className="relative  overflow-hidden group  rounded-xl border border-gray-700 flex flex-col">
       <button className="absolute right-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
         <svg
@@ -51,8 +44,6 @@ const Product = ({ data }: ProductProps) => {
         <h3 className="mt-4 text-lg font-medium text-white truncate">
           {title}
         </h3>
-        {/* <p className="mt-1.5 text-m text-white truncate">{description}</p> */}
-        {/* <p className="mt-1.5 text-sm text-white">{price} $</p> */}
         <form className="mt-4">
           <button className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto">
             Add to Cart
@@ -63,4 +54,4 @@ const Product = ({ data }: ProductProps) => {
   );
 };
 
-export default Product;
+export default ProductListItem;

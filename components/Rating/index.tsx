@@ -3,7 +3,7 @@ interface RatingProps {
 }
 
 const Rating = ({ rating }: RatingProps) => (
-  <span className="rounded-xl border border-gray-700 whitespace-nowrap bg-blue-600 px-3 py-1.5 text-xs font-medium text-white">
+  <span className="w-7 h-7 rounded-xl border border-gray-700 whitespace-nowrap bg-blue-600  text-xs font-medium text-white flex items-center justify-center">
     {rating}
   </span>
 );
