@@ -1,4 +1,5 @@
 import Rating from 'components/Rating';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export interface ProductDetails {
@@ -39,13 +40,16 @@ const Product = ({ data }: ProductProps) => {
           />
         </svg>
       </button>
-
-      <img
-        src={image}
-        alt={title}
-        className="object-contain w-full transition duration-500 group-hover:scale-105 sm:h-72 min-h-[300px] p-4"
-      />
-
+      <div className="p-4 bg-white ">
+        <Image
+          src={image}
+          alt={title}
+          layout="responsive"
+          width={16}
+          height={9}
+          objectFit="contain"
+        />
+      </div>
       <div className="relative p-6 border border-gray-800 bg-gray-900 text-white  h-full flex flex-col justify-between">
         <Rating rating={rating.rate} />
         <h3 className="mt-4 text-lg font-medium text-white truncate">

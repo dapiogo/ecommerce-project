@@ -17,7 +17,7 @@ export interface StoreApiResponse {
 }
 
 export const getProducts = async () => {
-  const res = await fetch('https://fakestoreapi.com/products/');
+  const res = await fetch(`https://fakestoreapi.com/products/`);
   const data: StoreApiResponse[] = await res.json();
 
   return data;
@@ -26,11 +26,11 @@ export const getProducts = async () => {
 const ProductsCrsPage = () => {
   const { data, error, isLoading } = useQuery(['products'], getProducts);
 
-  console.log(data);
-
   if (isLoading) return <div>Loading...</div>;
 
   if (!data || error) return <div>Cos poszlo nie tak</div>;
+
+  console.log(data.length);
 
   return (
     <Layout>
