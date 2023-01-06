@@ -1,7 +1,8 @@
-import LinkMarkdown from 'components/LinkMarkDown';
 import Rating from 'components/Rating';
+import { MDXRemote } from 'next-mdx-remote';
 import { NextSeo } from 'next-seo';
 import Image from 'next/image';
+import { MarkdownResult } from 'utils';
 
 export interface ProductDetails {
   id: number;
@@ -10,7 +11,7 @@ export interface ProductDetails {
   description: string;
   category: string;
   image: string;
-  longDescription: string;
+  longDescription: MarkdownResult;
   rating: {
     rate: number;
     count: number;
@@ -75,7 +76,8 @@ const Product = ({ data }: ProductProps) => {
           </h3>
           <p className="mt-4">{description}</p>
           <article className="prose lg:prose-xl">
-            <LinkMarkdown>{longDescription}</LinkMarkdown>
+            {/* <LinkMarkdown>{longDescription}</LinkMarkdown> */}
+            <MDXRemote {...longDescription} />
           </article>
           <form className="mt-4">
             <button className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto">

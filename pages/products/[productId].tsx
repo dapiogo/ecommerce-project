@@ -3,6 +3,8 @@ import Product from 'components/Product';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Link from 'next/link';
 import React from 'react';
+import { serialize } from 'next-mdx-remote/serialize';
+import { MarkdownResult } from 'utils';
 
 export interface StoreApiResponse {
   id: number;
@@ -11,7 +13,7 @@ export interface StoreApiResponse {
   description: string;
   category: string;
   image: string;
-  longDescription: string;
+  longDescription: MarkdownResult;
   rating: {
     rate: number;
     count: number;
@@ -46,7 +48,18 @@ export const getStaticProps = async ({
   );
   const data: StoreApiResponse | null = await res.json();
 
-  return { props: { data } };
+  if (!data) {
+    return {
+      props: {},
+      NotFound: true
+    };
+  }
+
+  return {
+    props: {
+      data: { ...data, longDescription: await serialize(data.longDescription) }
+    }
+  };
 };
 
 const ProductIdPage = ({

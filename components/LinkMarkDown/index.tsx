@@ -12,7 +12,6 @@ const LinkMarkdown = ({ children }: { children: string }) => {
             return <a {...props}></a>;
           }
 
-          console.log(props);
           return (
             <Link href={href} legacyBehavior>
               <a {...props}></a>
