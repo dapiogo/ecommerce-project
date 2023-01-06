@@ -21,7 +21,7 @@ export interface StoreApiResponse {
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch('https://fakestoreapi.com/products/');
+  const res = await fetch('https://naszsklep-api.vercel.app/api/products/');
   const data: StoreApiResponse[] = await res.json();
 
   return { props: { data } };

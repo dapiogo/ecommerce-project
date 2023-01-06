@@ -1,6 +1,7 @@
 import Rating from 'components/Rating';
 import Image from 'next/image';
-import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+
 
 export interface ProductDetails {
   id: number;
@@ -9,6 +10,7 @@ export interface ProductDetails {
   description: string;
   category: string;
   image: string;
+  longDescription: string;
   rating: {
     rate: number;
     count: number;
@@ -20,11 +22,9 @@ interface ProductProps {
 }
 
 const Product = ({ data }: ProductProps) => {
-  const { image, title, rating } = data;
+  const { image, title, rating, description, longDescription } = data;
   return (
-    <Link
-      href="/#"
-      className="relative  overflow-hidden group  rounded-xl border border-gray-700 flex flex-col">
+    <div className="relative  overflow-hidden group flex flex-col pt-4 bg-white">
       <button className="absolute right-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,6 @@ const Product = ({ data }: ProductProps) => {
           />
         </svg>
       </button>
-      <div className="p-4 bg-white ">
         <Image
           src={image}
           alt={title}
@@ -48,22 +47,25 @@ const Product = ({ data }: ProductProps) => {
           width={16}
           height={9}
           objectFit="contain"
+          className="max-w-[500px]"
         />
       </div>
-      <div className="relative p-6 border border-gray-800 bg-gray-900 text-white  h-full flex flex-col justify-between">
+      <div className="relative p-6   h-full flex flex-col justify-between">
         <Rating rating={rating.rate} />
-        <h3 className="mt-4 text-lg font-medium text-white truncate">
+        <h3 className="mt-4 text-lg font-medium text-gray-900 truncate">
           {title}
         </h3>
-        {/* <p className="mt-1.5 text-m text-white truncate">{description}</p> */}
-        {/* <p className="mt-1.5 text-sm text-white">{price} $</p> */}
+        <p className="mt-4">{description}</p>
+        <article className="prose lg:prose-xl">
+          <ReactMarkdown>{longDescription}</ReactMarkdown>
+        </article>
         <form className="mt-4">
           <button className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto">
             Add to Cart
           </button>
         </form>
       </div>
-    </Link>
+    </div>
   );
 };
 
