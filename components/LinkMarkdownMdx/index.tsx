@@ -17,26 +17,24 @@ const LinkMarkdownMDX = ({ children }: { children: MarkdownResult }) => {
           const APP_URL = process.env.APP_URL! as string;
 
           if (
-            href.startsWith('http://' || 'https://') && !href.startsWith(APP_URL)
+            href.startsWith('http://' || 'https://') &&
+            !href.startsWith(APP_URL)
           ) {
             return (
               <a
                 {...props}
                 href={href}
-                target='_blank'
-                rel='noopener noreferrer'
+                target="_blank"
+                rel="noopener noreferrer"
               />
-            )
+            );
           }
 
           return (
             <Link href={href} legacyBehavior>
               <a {...props} />
             </Link>
-          )
-        },
-
-     
+          );
         }
       }}
     />
