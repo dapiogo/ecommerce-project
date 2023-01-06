@@ -2,7 +2,6 @@ import Rating from 'components/Rating';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 
-
 export interface ProductDetails {
   id: number;
   title: string;
@@ -40,16 +39,15 @@ const Product = ({ data }: ProductProps) => {
           />
         </svg>
       </button>
-        <Image
-          src={image}
-          alt={title}
-          layout="responsive"
-          width={16}
-          height={9}
-          objectFit="contain"
-          className="max-w-[500px]"
-        />
-      </div>
+      <Image
+        src={image}
+        alt={title}
+        layout="responsive"
+        width={16}
+        height={9}
+        objectFit="contain"
+        className="max-w-[500px]"
+      />
       <div className="relative p-6   h-full flex flex-col justify-between">
         <Rating rating={rating.rate} />
         <h3 className="mt-4 text-lg font-medium text-gray-900 truncate">
