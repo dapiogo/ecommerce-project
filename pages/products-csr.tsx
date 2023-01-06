@@ -17,7 +17,7 @@ export interface StoreApiResponse {
 }
 
 export const getProducts = async () => {
-  const res = await fetch('https://fakestoreapi.com/products/');
+  const res = await fetch(`https://naszsklep-api.vercel.app/api/products/`);
   const data: StoreApiResponse[] = await res.json();
 
   return data;
