@@ -1,3 +1,4 @@
+import { userCartState } from 'components/Cart/CartContext';
 import Rating from 'components/Rating';
 import { MDXRemote } from 'next-mdx-remote';
 import { NextSeo } from 'next-seo';
@@ -24,6 +25,9 @@ interface ProductProps {
 
 const Product = ({ data }: ProductProps) => {
   const { image, title, rating, description, longDescription, id } = data;
+
+  const { addItemToCart } = userCartState();
+
   return (
     <>
       <NextSeo
@@ -79,11 +83,19 @@ const Product = ({ data }: ProductProps) => {
             {/* <LinkMarkdown>{longDescription}</LinkMarkdown> */}
             <MDXRemote {...longDescription} />
           </article>
-          <form className="mt-4">
-            <button className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto">
-              Add to Cart
-            </button>
-          </form>
+
+          <button
+            onClick={() =>
+              addItemToCart({
+                id,
+                price: 22.11,
+                title,
+                count: 1
+              })
+            }
+            className="block w-full rounded border border-blue-600 bg-blue-600 text-white px-12 py-3 text-sm font-medium  focus:outline-none focus:ring active:text-opacity-75 sm:w-auto">
+            Add to Cart
+          </button>
         </div>
       </div>
     </>

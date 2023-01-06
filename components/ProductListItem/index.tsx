@@ -1,3 +1,4 @@
+import { userCartState } from 'components/Cart/CartContext';
 import { ProductDetails } from 'components/Product';
 import Rating from 'components/Rating';
 import Image from 'next/legacy/image';
@@ -14,10 +15,11 @@ interface ProductListItemProps {
 
 const ProductListItem = ({ data }: ProductListItemProps) => {
   const { image, title, rating, id } = data;
+
+  const { addItemToCart } = userCartState();
+
   return (
-    <Link
-      href={`products/${id}`}
-      className="relative  overflow-hidden group  rounded-xl border border-gray-700 flex flex-col">
+    <div className="relative  overflow-hidden group  rounded-xl border border-gray-700 flex flex-col">
       <button className="absolute right-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -49,13 +51,21 @@ const ProductListItem = ({ data }: ProductListItemProps) => {
         <h3 className="mt-4 text-lg font-medium text-white truncate">
           {title}
         </h3>
-        <form className="mt-4">
-          <button className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto">
-            Add to Cart
-          </button>
-        </form>
+        <Link href={`products/${id}`}>Do produktu</Link>
+        <button
+          className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+          onClick={() =>
+            addItemToCart({
+              id,
+              price: 21.22,
+              title,
+              count: 1
+            })
+          }>
+          Add to Cart
+        </button>
       </div>
-    </Link>
+    </div>
   );
 };
 
