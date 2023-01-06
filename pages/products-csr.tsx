@@ -26,11 +26,11 @@ export const getProducts = async () => {
 const ProductsCrsPage = () => {
   const { data, error, isLoading } = useQuery(['products'], getProducts);
 
-  console.log(data);
-
   if (isLoading) return <div>Loading...</div>;
 
   if (!data || error) return <div>Cos poszlo nie tak</div>;
+
+  console.log(data.length);
 
   return (
     <Layout>
