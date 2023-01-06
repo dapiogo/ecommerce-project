@@ -1,7 +1,7 @@
+import LinkMarkdown from 'components/LinkMarkDown';
 import Rating from 'components/Rating';
 import { NextSeo } from 'next-seo';
 import Image from 'next/image';
-import ReactMarkdown from 'react-markdown';
 
 export interface ProductDetails {
   id: number;
@@ -75,7 +75,7 @@ const Product = ({ data }: ProductProps) => {
           </h3>
           <p className="mt-4">{description}</p>
           <article className="prose lg:prose-xl">
-            <ReactMarkdown>{longDescription}</ReactMarkdown>
+            <LinkMarkdown>{longDescription}</LinkMarkdown>
           </article>
           <form className="mt-4">
             <button className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto">
