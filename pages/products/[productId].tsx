@@ -4,28 +4,32 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import { serialize } from 'next-mdx-remote/serialize';
-import { MarkdownResult } from 'utils';
-
-export interface StoreApiResponse {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  longDescription: MarkdownResult;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}
+import { apolloClient } from 'graphql/apolloClient';
+import { gql } from '@apollo/client';
 
 export const getStaticPaths = async () => {
-  const res = await fetch(`https://naszsklep-api.vercel.app/api/products/`);
-  const data: StoreApiResponse[] = await res.json();
+  interface GetProductsIdResponse {
+    products: Product[];
+  }
+
+  interface Product {
+    id: string;
+    slug: string;
+  }
+
+  const { data } = await apolloClient.query<GetProductsIdResponse>({
+    query: gql`
+      query GetProductsId {
+        products {
+          id
+          slug
+        }
+      }
+    `
+  });
 
   return {
-    paths: data.map((product) => {
+    paths: data.products.map((product) => {
       return {
         params: {
           productId: `${product.id}`
@@ -36,6 +40,21 @@ export const getStaticPaths = async () => {
   };
 };
 
+interface ProductDetail {
+  id: string;
+  slug: string;
+  name: string;
+  price: number;
+  description: string;
+  images: {
+    url: string;
+  }[];
+}
+
+interface GetProductByIdResponse {
+  product: ProductDetail;
+}
+
 export const getStaticProps = async ({
   params
 }: GetStaticPropsContext<{ productId: string }>) => {
@@ -43,10 +62,22 @@ export const getStaticProps = async ({
     return { props: {}, notFound: true };
   }
 
-  const res = await fetch(
-    `https://naszsklep-api.vercel.app/api/products/${params?.productId}`
-  );
-  const data: StoreApiResponse | null = await res.json();
+  const { data } = await apolloClient.query<GetProductByIdResponse>({
+    variables: { id: params?.productId },
+    query: gql`
+      query GetProductById($id: ID) {
+        product(where: { id: $id }) {
+          id
+          name
+          price
+          description
+          images {
+            url
+          }
+        }
+      }
+    `
+  });
 
   if (!data) {
     return {
@@ -57,7 +88,10 @@ export const getStaticProps = async ({
 
   return {
     props: {
-      data: { ...data, longDescription: await serialize(data.longDescription) }
+      data: {
+        ...data.product,
+        longDescription: await serialize(data.product.description)
+      }
     }
   };
 };

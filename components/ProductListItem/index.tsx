@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 type TProductListItem = Pick<
   ProductDetails,
-  'title' | 'image' | 'rating' | 'id'
+  'name' | 'images' | 'id' | 'price'
 >;
 
 interface ProductListItemProps {
@@ -14,7 +14,7 @@ interface ProductListItemProps {
 }
 
 const ProductListItem = ({ data }: ProductListItemProps) => {
-  const { image, title, rating, id } = data;
+  const { images, name, id, price } = data;
 
   const { addItemToCart } = userCartState();
 
@@ -37,8 +37,8 @@ const ProductListItem = ({ data }: ProductListItemProps) => {
       </button>
       <div className="p-4 bg-white">
         <Image
-          src={image}
-          alt={title}
+          src={images[0].url}
+          alt={name}
           layout="responsive"
           width={16}
           height={9}
@@ -47,18 +47,16 @@ const ProductListItem = ({ data }: ProductListItemProps) => {
       </div>
 
       <div className="relative p-6 border border-gray-800 bg-gray-900 text-white  h-full flex flex-col justify-between">
-        <Rating rating={rating.rate} />
-        <h3 className="mt-4 text-lg font-medium text-white truncate">
-          {title}
-        </h3>
+        <Rating rating={0} />
+        <h3 className="mt-4 text-lg font-medium text-white truncate">{name}</h3>
         <Link href={`products/${id}`}>Do produktu</Link>
         <button
           className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
           onClick={() =>
             addItemToCart({
               id,
-              price: 21.22,
-              title,
+              price,
+              name,
               count: 1
             })
           }>

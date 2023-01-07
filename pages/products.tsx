@@ -1,28 +1,44 @@
 import Layout from 'components/Layout';
 import ProductContainer from 'components/ProductContainer';
 import ProductListItem from 'components/ProductListItem';
+import { gql } from '@apollo/client';
 import { InferGetStaticPropsType } from 'next';
+import { apolloClient } from 'graphql/apolloClient';
 
 //SSG - propsy w sposob statyczny
 
 //to wykonuje sie w czasie budowania aplikacji
 
-export interface StoreApiResponse {
-  id: number;
-  title: string;
+export interface Product {
+  id: string;
+  slug: string;
+  name: string;
   price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
+  images: {
+    url: string;
+  }[];
+}
+
+export interface GetProductsListResponse {
+  products: Product[];
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch('https://naszsklep-api.vercel.app/api/products/');
-  const data: StoreApiResponse[] = await res.json();
+  const { data } = await apolloClient.query<GetProductsListResponse>({
+    query: gql`
+      query GetProductsList {
+        products {
+          id
+          slug
+          name
+          price
+          images(first: 1) {
+            url
+          }
+        }
+      }
+    `
+  });
 
   return { props: { data } };
 };
@@ -33,7 +49,7 @@ const ProductsPage = ({
   return (
     <Layout>
       <ProductContainer>
-        {data.map((product) => (
+        {data.products.map((product) => (
           <ProductListItem key={product.id} data={product} />
         ))}
       </ProductContainer>
