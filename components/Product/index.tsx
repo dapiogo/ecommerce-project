@@ -1,22 +1,17 @@
 import { userCartState } from 'components/Cart/CartContext';
 import Rating from 'components/Rating';
-import { MDXRemote } from 'next-mdx-remote';
 import { NextSeo } from 'next-seo';
 import Image from 'next/image';
-import { MarkdownResult } from 'utils';
 
 export interface ProductDetails {
-  id: number;
-  title: string;
+  id: string;
+  slug: string;
+  name: string;
   price: number;
   description: string;
-  category: string;
-  image: string;
-  longDescription: MarkdownResult;
-  rating: {
-    rate: number;
-    count: number;
-  };
+  images: {
+    url: string;
+  }[];
 }
 
 interface ProductProps {
@@ -24,24 +19,24 @@ interface ProductProps {
 }
 
 const Product = ({ data }: ProductProps) => {
-  const { image, title, rating, description, longDescription, id } = data;
+  const { images, name, id, description } = data;
 
   const { addItemToCart } = userCartState();
 
   return (
     <>
       <NextSeo
-        title={title}
+        title={name}
         description={description}
         canonical={`https://next-ecommerce-xi-roan.vercel.app/products/${id}`}
         openGraph={{
           url: `https://next-ecommerce-xi-roan.vercel.app/products/${id}`,
-          title: title,
+          title: name,
           description: description,
           images: [
             {
-              url: data.image,
-              alt: title,
+              url: images[0].url,
+              alt: name,
               type: 'image/jpeg'
             }
           ],
@@ -65,8 +60,8 @@ const Product = ({ data }: ProductProps) => {
           </svg>
         </button>
         <Image
-          src={image}
-          alt={title}
+          src={images[0].url}
+          alt={name}
           layout="responsive"
           width={16}
           height={9}
@@ -74,22 +69,19 @@ const Product = ({ data }: ProductProps) => {
           className="max-w-[500px]"
         />
         <div className="relative p-6   h-full flex flex-col justify-between">
-          <Rating rating={rating.rate} />
+          <Rating rating={0} />
           <h3 className="mt-4 text-lg font-medium text-gray-900 truncate">
-            {title}
+            {name}
           </h3>
-          <p className="mt-4">{description}</p>
-          <article className="prose lg:prose-xl">
-            {/* <LinkMarkdown>{longDescription}</LinkMarkdown> */}
-            <MDXRemote {...longDescription} />
-          </article>
+          {/* <p className="mt-4">{description}</p> */}
+          <article className="prose lg:prose-xl">{description}</article>
 
           <button
             onClick={() =>
               addItemToCart({
                 id,
                 price: 22.11,
-                title,
+                name,
                 count: 1
               })
             }

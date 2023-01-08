@@ -1,41 +1,45 @@
-import { useQuery } from '@tanstack/react-query';
+import { gql, useQuery } from '@apollo/client';
 import Layout from 'components/Layout';
 import ProductContainer from 'components/ProductContainer';
 import ProductListItem from 'components/ProductListItem';
 
-export interface StoreApiResponse {
-  id: number;
-  title: string;
+interface Product {
+  id: string;
+  slug: string;
+  name: string;
   price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
+  images: {
+    url: string;
+  }[];
 }
 
-export const getProducts = async () => {
-  const res = await fetch(`https://naszsklep-api.vercel.app/api/products/`);
-  const data: StoreApiResponse[] = await res.json();
-
-  return data;
-};
+interface GetProductsListResponse {
+  products: Product[];
+}
 
 const ProductsCrsPage = () => {
-  const { data, error, isLoading } = useQuery(['products'], getProducts);
+  const { loading, error, data } = useQuery<GetProductsListResponse>(gql`
+    query GetProductsList {
+      products {
+        id
+        slug
+        name
+        price
+        images(first: 1) {
+          url
+        }
+      }
+    }
+  `);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>;
 
   if (!data || error) return <div>Cos poszlo nie tak</div>;
-
-  console.log(data.length);
 
   return (
     <Layout>
       <ProductContainer>
-        {data.map((product) => (
+        {data.products.map((product) => (
           <ProductListItem key={product.id} data={product} />
         ))}
       </ProductContainer>

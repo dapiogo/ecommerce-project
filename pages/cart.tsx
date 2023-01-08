@@ -10,10 +10,9 @@ const CartContent = () => {
         {cartState.items.map((cartItem, index) => (
           <li
             className="py-4 flex justify-between"
-            key={`${cartItem.title}_${index}`}>
+            key={`${cartItem.name}_${index}`}>
             <div>
-              {' '}
-              {cartItem.title} ({cartItem.count})
+              {cartItem.name} ({cartItem.count})
             </div>
             <div className="flex justify-center">
               {cartItem.price}
